@@ -8,6 +8,7 @@
 #include "Plane.h"
 #include "Shader.h"
 #include "Texture.h"
+#include "Positions.h"
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 
@@ -56,26 +57,24 @@ int main()
 	******************/
 	Shader shader = Shader("VertexShader.glsl", "FragmentShader.glsl");
 	shader.use();
-
+	shader.setInt("texture0", 0);
+	shader.setInt("texture1", 1);
+	shader.setInt("texture1", 1);
 	/*****************
 	textures
 	******************/
 	unsigned int texture0 = 0;
 	unsigned int texture1 = 0;
-	unsigned int texture2 = 0;
 
 	Texture standard(texture0, GL_TEXTURE0, "default.png");
-	standard.bind();
+	Texture cross(texture1, GL_TEXTURE1, "cross.png");
+	Texture circle(texture1, GL_TEXTURE1, "circle.png");
 
 	/*****************
 	positions
 	******************/
-	glm::vec3 zero = glm::vec3(-1.f, 1.f, 0.f);
-	glm::vec3 one = glm::vec3(-(1.f - (2.f / 3.f)), 1.f, 0.f);
-	glm::vec3 two = glm::vec3(1.f - (2.f / 3.f), 1.f, 0.f);
-	glm::vec3 three = glm::vec3(1.f, 1.f, 0.f);
-	glm::vec3 four = glm::vec3(-1.f, 1.f - (2.f / 3.f), 0.f);
-	glm::vec3 five = glm::vec3(-(1.f - (2.f / 3.f)), 1.f - (2.f / 3.f), 0.f);
+	standard.bind();
+	
 
 	while (!glfwWindowShouldClose(mainWindow.window))
 	{
@@ -92,8 +91,41 @@ int main()
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		Plane topL(zero, four, five, one);
+		Plane topM(one, five, six, two);
+		Plane topR(two, six, seven, three);
+		Plane middleL(four, eight, nine, five);
+		Plane middleM(five, nine, ten, six);
+		Plane middleR(six, ten, eleven, seven);
+		Plane bottomL(eight, twelve, thirteen, nine);
+		Plane bottomM(nine, thirteen, fourteen, ten);
+		Plane bottomR(ten, fourteen, fifteen, eleven);
+
+
+		circle.bind();
 		topL.disableColor();
 		topL.draw();
+		topM.disableColor();
+		topM.draw();
+		topR.disableColor();
+		topR.draw();
+		middleL.disableColor();
+		middleL.draw();
+		middleM.disableColor();
+		middleM.draw();
+		middleR.disableColor();
+		middleR.draw();
+
+		cross.bind();
+		bottomL.disableColor();
+		bottomL.draw();
+		bottomM.disableColor();
+		bottomM.draw();
+		bottomR.disableColor();
+		bottomR.draw();
+
+
+		cross.unBind();
+		circle.unBind();
 
 		glfwSwapBuffers(mainWindow.window);
 		glfwPollEvents();

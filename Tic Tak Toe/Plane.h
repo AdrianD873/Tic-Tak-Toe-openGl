@@ -122,21 +122,25 @@ public:
 
 	void disableColor()
 	{
+		glBindVertexArray(vao);
 		glDisableVertexAttribArray(1);
 	}
 
 	void anableColor()
 	{
+		glBindVertexArray(vao);
 		glEnableVertexAttribArray(1);
 	}
 
 	void disableTexture()
 	{
+		glBindVertexArray(vao);
 		glDisableVertexAttribArray(2);
 	}
 
 	void enableTexture()
 	{
+		glBindVertexArray(vao);
 		glEnableVertexAttribArray(2);
 	}
 };
