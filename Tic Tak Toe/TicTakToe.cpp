@@ -71,14 +71,13 @@ int main()
 	Texture circle(texture1, GL_TEXTURE1, "circle.png");
 
 	/*****************
-	positions
+	setup
 	******************/
 	standard.bind();
-	
+	glfwMakeContextCurrent(mainWindow.window);
 
 	while (!glfwWindowShouldClose(mainWindow.window))
 	{
-		glfwMakeContextCurrent(mainWindow.window);
 		/*****************
 		input
 		******************/
@@ -99,7 +98,6 @@ int main()
 		Plane bottomL(eight, twelve, thirteen, nine);
 		Plane bottomM(nine, thirteen, fourteen, ten);
 		Plane bottomR(ten, fourteen, fifteen, eleven);
-
 
 		circle.bind();
 		topL.disableColor();
