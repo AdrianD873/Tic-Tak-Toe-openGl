@@ -24,6 +24,7 @@
     <ProjectGuid>{530ee968-ea4c-4d4e-b5ac-8ad60e70b2d9}</ProjectGuid>
     <RootNamespace>TicTakToe</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>Tic Tak Toe openGl</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
