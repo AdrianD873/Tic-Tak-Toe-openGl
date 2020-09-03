@@ -86,11 +86,14 @@ int main()
 	glfwMakeContextCurrent(mainWindow.window);
 	glfwSetMouseButtonCallback(mainWindow.window, mouseButtonCallback);
 
-	while (!glfwWindowShouldClose(mainWindow.window))
+	bool gameEnd = false;
+
+	while (!glfwWindowShouldClose(mainWindow.window) && gameEnd == false)
 	{
 		/*****************
 		input
 		******************/
+		glfwPollEvents();
 		processKeyInput(mainWindow.window);
 
 		/*****************
@@ -110,42 +113,23 @@ int main()
 		{
 			cross.unBind();	//unbindes cross and circle
 			if (i == 0)
-			{
 				offset = glm::fvec3(0.f);
-			}
 			else if (i == 1)
-			{
 				offset = glm::fvec3(1.f - (1.f / 3.f), 0.f, 0.f);
-
-			}
-			else if(i == 2)
-			{
+			else if (i == 2)
 				offset = glm::fvec3(2.f - (2.f / 3.f), 0.f, 0.f);
-			}
 			else if (i == 3)
-			{
 				offset = glm::fvec3(0.f, -(1.f - (1.f / 3.f)), 0.f);
-			}
 			else if (i == 4)
-			{
 				offset = glm::fvec3(1.f - (1.f / 3.f), -(1.f - (1.f / 3.f)), 0.f);
-			}
 			else if (i == 5)
-			{
 				offset = glm::fvec3(2.f - (2.f / 3.f), -(1.f - (1.f / 3.f)), 0.f);
-			}
 			else if (i == 6)
-			{
 				offset = glm::fvec3(0.f, -(2.f - (2.f / 3.f)), 0.f);
-			}
 			else if (i == 7)
-			{
 				offset = glm::fvec3(1.f - (1.f / 3.f), -(2.f - (2.f / 3.f)), 0.f);
-			}
 			else if (i == 8)
-			{
 				offset = glm::fvec3(2.f - (2.f / 3.f), -(2.f - (2.f / 3.f)), 0.f);
-			}
 
 			if (states[i] == 1)
 				cross.bind();
@@ -159,9 +143,35 @@ int main()
 		cross.unBind();
 		circle.unBind();
 
+		//winn detection
+		for (int i = 0; i <= 2; i++)
+		{
+			if (states[0 + 3 * i] == states[1 + 3 * i] && states[0 + 3 * i] == states[2 + 3 * i] && states[0 + 3 * i] != 0)
+			{
+				gameEnd = true;
+				//std::cout << "1" << std::endl;
+			}
+
+			else if (states[0 + i] == states[3 + i] && states[0 + i] == states[6 + i] && states[0 + i] != 0)
+			{
+				gameEnd = true;
+				//std::cout << "2" << std::endl;
+			}
+
+			else if (states[0 + i] == states[4] && states[0 + i] == states[8 - i] && states[0 + i] != 0)
+			{
+				gameEnd = true;
+				//std::cout << "3 " << i << std::endl;
+			}
+		}
+
 		glfwSwapBuffers(mainWindow.window);
-		glfwPollEvents();
 	}
+
+	if (turn == 1)
+		std::cout << "circle has won the game" << std::endl;
+	else
+		std::cout << "cross has won the game" << std::endl;
 
 	glfwTerminate();
 	std::cout << "the program has ended" << std::endl;
@@ -182,7 +192,6 @@ void markField()
 	int height = mainWindow.getWindowHeight();
 	int width = mainWindow.getWinodwWidth();
 	glfwGetCursorPos(mainWindow.window, &xpos, &ypos);
-	std::cout << "pos: x." << xpos << " y." << ypos << std::endl;
 
 	if (xpos < width / 3)
 	{
