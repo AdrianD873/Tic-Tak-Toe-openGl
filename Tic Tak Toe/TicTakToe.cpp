@@ -3,16 +3,25 @@
 #include <iostream>
 #include <glew.h>
 #include <glfw3.h>
+#include <gtc\type_ptr.hpp>
 
 #include "Window.h"
 #include "Plane.h"
 #include "Shader.h"
 #include "Texture.h"
 #include "Positions.h"
+#include "Input.h"
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
+void mouseButtonCallback(GLFWwindow* window, int button, int state, int mods);
 
 Window mainWindow;
+
+int states[] = {0, 0, 0,
+				0, 0, 0,
+				0, 0, 0};
+
+int turn = 1;
 
 int main()
 {
@@ -75,13 +84,14 @@ int main()
 	******************/
 	standard.bind();
 	glfwMakeContextCurrent(mainWindow.window);
+	glfwSetMouseButtonCallback(mainWindow.window, mouseButtonCallback);
 
 	while (!glfwWindowShouldClose(mainWindow.window))
 	{
 		/*****************
 		input
 		******************/
-		mainWindow.processInput();
+		processKeyInput(mainWindow.window);
 
 		/*****************
 		rendering
@@ -89,38 +99,62 @@ int main()
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		Plane topL(zero, four, five, one);
-		Plane topM(one, five, six, two);
-		Plane topR(two, six, seven, three);
-		Plane middleL(four, eight, nine, five);
-		Plane middleM(five, nine, ten, six);
-		Plane middleR(six, ten, eleven, seven);
-		Plane bottomL(eight, twelve, thirteen, nine);
-		Plane bottomM(nine, thirteen, fourteen, ten);
-		Plane bottomR(ten, fourteen, fifteen, eleven);
+		Plane field(zero, four, five, one);
+		field.disableColor();
 
-		circle.bind();
-		topL.disableColor();
-		topL.draw();
-		topM.disableColor();
-		topM.draw();
-		topR.disableColor();
-		topR.draw();
-		middleL.disableColor();
-		middleL.draw();
-		middleM.disableColor();
-		middleM.draw();
-		middleR.disableColor();
-		middleR.draw();
+		glm::fvec3 offset(0.f);
 
-		cross.bind();
-		bottomL.disableColor();
-		bottomL.draw();
-		bottomM.disableColor();
-		bottomM.draw();
-		bottomR.disableColor();
-		bottomR.draw();
+		int pos = glGetUniformLocation(shader.ID, "offset");
 
+		for (int i = 0; i <= 8; i++)
+		{
+			cross.unBind();	//unbindes cross and circle
+			if (i == 0)
+			{
+				offset = glm::fvec3(0.f);
+			}
+			else if (i == 1)
+			{
+				offset = glm::fvec3(1.f - (1.f / 3.f), 0.f, 0.f);
+
+			}
+			else if(i == 2)
+			{
+				offset = glm::fvec3(2.f - (2.f / 3.f), 0.f, 0.f);
+			}
+			else if (i == 3)
+			{
+				offset = glm::fvec3(0.f, -(1.f - (1.f / 3.f)), 0.f);
+			}
+			else if (i == 4)
+			{
+				offset = glm::fvec3(1.f - (1.f / 3.f), -(1.f - (1.f / 3.f)), 0.f);
+			}
+			else if (i == 5)
+			{
+				offset = glm::fvec3(2.f - (2.f / 3.f), -(1.f - (1.f / 3.f)), 0.f);
+			}
+			else if (i == 6)
+			{
+				offset = glm::fvec3(0.f, -(2.f - (2.f / 3.f)), 0.f);
+			}
+			else if (i == 7)
+			{
+				offset = glm::fvec3(1.f - (1.f / 3.f), -(2.f - (2.f / 3.f)), 0.f);
+			}
+			else if (i == 8)
+			{
+				offset = glm::fvec3(2.f - (2.f / 3.f), -(2.f - (2.f / 3.f)), 0.f);
+			}
+
+			if (states[i] == 1)
+				cross.bind();
+			else if (states[i] == 2)
+				circle.bind();
+
+			glUniform3fv(pos, 1, glm::value_ptr(offset));
+			field.draw();
+		}
 
 		cross.unBind();
 		circle.unBind();
@@ -140,4 +174,52 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 	glViewport(0, 0, width, height);
 	mainWindow.windowWidth = width;
 	mainWindow.windowHeight = height;
+}
+
+void markField()
+{
+	double xpos, ypos;
+	int height = mainWindow.getWindowHeight();
+	int width = mainWindow.getWinodwWidth();
+	glfwGetCursorPos(mainWindow.window, &xpos, &ypos);
+	std::cout << "pos: x." << xpos << " y." << ypos << std::endl;
+
+	if (xpos < width / 3)
+	{
+		if (ypos < height / 3)
+			states[0] = turn;
+		else if (ypos > 2 * height / 3)
+			states[6] = turn;
+		else
+			states[3] = turn;
+	}
+	else if (xpos > 2 * width / 3)
+	{
+		if (ypos < height / 3)
+			states[2] = turn;
+		else if (ypos > 2 * height / 3)
+			states[8] = turn;
+		else
+			states[5] = turn;
+	}
+	else
+	{
+		if (ypos < height / 3)
+			states[1] = turn;
+		else if (ypos > 2 * height / 3)
+			states[7] = turn;
+		else
+			states[4] = turn;
+	}
+	
+	if (turn == 1)
+		turn = 2;
+	else
+		turn = 1;
+}
+
+void mouseButtonCallback(GLFWwindow* window, int button, int state, int mods)
+{
+	if (button == GLFW_MOUSE_BUTTON_LEFT && state == GLFW_PRESS)
+		markField();
 }

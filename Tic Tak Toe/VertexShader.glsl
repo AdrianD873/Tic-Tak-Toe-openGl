@@ -7,9 +7,11 @@ layout (location = 2) in vec2 TextCoord;
 out vec3 color;
 out vec2 textureCoord;
 
+uniform vec3 offset;
+
 void main()
 {
 	color = col;
 	textureCoord = vec2(TextCoord.x, TextCoord.y);
-	gl_Position = vec4(pos, 1.f);
+	gl_Position = vec4(pos + offset, 1.f);
 }

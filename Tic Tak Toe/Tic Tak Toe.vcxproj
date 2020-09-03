@@ -155,6 +155,7 @@
     <ClCompile Include="TicTakToe.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Input.h" />
     <ClInclude Include="Plane.h" />
     <ClInclude Include="Positions.h" />
     <ClInclude Include="Shader.h" />
