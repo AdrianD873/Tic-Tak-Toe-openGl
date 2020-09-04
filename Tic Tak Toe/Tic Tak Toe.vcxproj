@@ -163,8 +163,28 @@
     <ClInclude Include="Window.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="fragmentShader.glsl" />
-    <None Include="VertexShader.glsl" />
+    <CopyFileToFolders Include="fragmentShader.glsl">
+      <FileType>Document</FileType>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="VertexShader.glsl">
+      <FileType>Document</FileType>
+    </CopyFileToFolders>
+  </ItemGroup>
+  <ItemGroup>
+    <CopyFileToFolders Include="default.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <CopyFileToFolders Include="cross.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <CopyFileToFolders Include="circle.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <CopyFileToFolders Include="circle_won.png" />
+    <CopyFileToFolders Include="cross_won.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="FragmentShaderWon.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -40,7 +40,27 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="VertexShader.glsl" />
-    <None Include="fragmentShader.glsl" />
+    <CopyFileToFolders Include="fragmentShader.glsl" />
+    <CopyFileToFolders Include="VertexShader.glsl" />
+    <CopyFileToFolders Include="default.png">
+      <Filter>Resource Files</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="cross.png">
+      <Filter>Resource Files</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="circle.png">
+      <Filter>Resource Files</Filter>
+    </CopyFileToFolders>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="cross_won.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="circle_won.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="FragmentShaderWon.glsl" />
   </ItemGroup>
 </Project>

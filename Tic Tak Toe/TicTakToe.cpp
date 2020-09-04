@@ -61,23 +61,38 @@ int main()
 
 	glfwSetFramebufferSizeCallback(mainWindow.window, framebuffer_size_callback);
 
+
+	//info
+	const GLubyte* vendor = glGetString(GL_VENDOR); // Returns the vendor
+	const GLubyte* renderer = glGetString(GL_RENDERER); // Returns a hint to the model
+
+	std::cout << vendor << renderer << std::endl;
+
 	/*****************
 	Shader
 	******************/
 	Shader shader = Shader("VertexShader.glsl", "FragmentShader.glsl");
+	Shader shader1 = Shader("VertexShader.glsl", "FragmentShaderWon.glsl");
+
 	shader.use();
 	shader.setInt("texture0", 0);
 	shader.setInt("texture1", 1);
 	shader.setInt("texture1", 1);
+
+	shader1.use();
+	shader1.setInt("texture2", 2);
 	/*****************
 	textures
 	******************/
 	unsigned int texture0 = 0;
 	unsigned int texture1 = 0;
+	unsigned int texture2 = 0;
 
 	Texture standard(texture0, GL_TEXTURE0, "default.png");
 	Texture cross(texture1, GL_TEXTURE1, "cross.png");
 	Texture circle(texture1, GL_TEXTURE1, "circle.png");
+	Texture crossWon(texture2, GL_TEXTURE2, "cross_won.png");
+	Texture circleWon(texture2, GL_TEXTURE2, "circle_won.png");
 
 	/*****************
 	setup
@@ -88,8 +103,9 @@ int main()
 
 	bool gameEnd = false;
 
-	while (!glfwWindowShouldClose(mainWindow.window) && gameEnd == false)
+	while (!glfwWindowShouldClose(mainWindow.window))
 	{
+		shader.use();
 		/*****************
 		input
 		******************/
@@ -109,7 +125,7 @@ int main()
 
 		int pos = glGetUniformLocation(shader.ID, "offset");
 
-		for (int i = 0; i <= 8; i++)
+		for (int i = 0; i < 9; i++)
 		{
 			cross.unBind();	//unbindes cross and circle
 			if (i == 0)
@@ -165,13 +181,25 @@ int main()
 			}
 		}
 
+		if (gameEnd == true)
+		{
+			shader1.use();
+			Plane victory(glm::vec3(-1.f, 1.f, 0.f), glm::vec3(-1.f, -1.f, 0.f), glm::vec3(1.f, -1.f, 0.f), glm::vec3(1.f, 1.f, 0.f));
+			if (turn == 1)
+			{
+				std::cout << "circle has won the game" << std::endl;
+				circleWon.bind();
+			}
+			else
+			{
+				std::cout << "cross has won the game" << std::endl;
+				crossWon.bind();
+			}
+			victory.draw();
+		}
+
 		glfwSwapBuffers(mainWindow.window);
 	}
-
-	if (turn == 1)
-		std::cout << "circle has won the game" << std::endl;
-	else
-		std::cout << "cross has won the game" << std::endl;
 
 	glfwTerminate();
 	std::cout << "the program has ended" << std::endl;
