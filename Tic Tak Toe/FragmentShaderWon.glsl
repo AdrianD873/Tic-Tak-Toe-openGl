@@ -5,8 +5,6 @@ in vec2 textureCoord;
 
 out vec4 pixelColor;
 
-uniform sampler2D texture0;
-uniform sampler2D texture1;
 uniform sampler2D texture2;
 
 void main()

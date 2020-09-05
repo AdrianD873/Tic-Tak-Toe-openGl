@@ -22,6 +22,7 @@ int states[] = {0, 0, 0,
 				0, 0, 0};
 
 int turn = 1;
+bool gameEnd = false;
 
 int main()
 {
@@ -100,8 +101,6 @@ int main()
 	standard.bind();
 	glfwMakeContextCurrent(mainWindow.window);
 	glfwSetMouseButtonCallback(mainWindow.window, mouseButtonCallback);
-
-	bool gameEnd = false;
 
 	while (!glfwWindowShouldClose(mainWindow.window))
 	{
@@ -255,8 +254,27 @@ void markField()
 		turn = 1;
 }
 
+void menue()
+{
+	double xpos, ypos;
+	int height = mainWindow.getWindowHeight();
+	int width = mainWindow.getWinodwWidth();
+	glfwGetCursorPos(mainWindow.window, &xpos, &ypos);
+
+	if(xpos < width / 2)
+		glfwSetWindowShouldClose(mainWindow.window, true);
+	else
+		for (int i = 0; i < 9; i++)
+		{
+			states[i] = 0;
+			gameEnd = false;
+		}
+}
+
 void mouseButtonCallback(GLFWwindow* window, int button, int state, int mods)
 {
-	if (button == GLFW_MOUSE_BUTTON_LEFT && state == GLFW_PRESS)
+	if (button == GLFW_MOUSE_BUTTON_LEFT && state == GLFW_PRESS && gameEnd == false)
 		markField();
+	if (button == GLFW_MOUSE_BUTTON_LEFT && state == GLFW_PRESS && gameEnd == true)
+		menue();
 }
