@@ -4,6 +4,7 @@
 #include <glew.h>
 #include <glfw3.h>
 #include <gtc\type_ptr.hpp>
+#include <Windows.h>
 
 #include "Window.h"
 #include "Plane.h"
@@ -26,6 +27,13 @@ bool gameEnd = false;
 
 int main()
 {
+	//hide console
+#ifndef _DEBUG
+	ShowWindow(::GetConsoleWindow(), SW_HIDE);
+#else
+	ShowWindow(::GetConsoleWindow(), SW_SHOW);
+#endif
+
 	/*****************
 	initialize glfw
 	*****************/

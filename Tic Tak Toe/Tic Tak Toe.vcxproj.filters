@@ -51,14 +51,12 @@
     <CopyFileToFolders Include="circle.png">
       <Filter>Resource Files</Filter>
     </CopyFileToFolders>
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="cross_won.png">
+    <CopyFileToFolders Include="circle_won.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="circle_won.png">
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="cross_won.png">
       <Filter>Resource Files</Filter>
-    </Image>
+    </CopyFileToFolders>
   </ItemGroup>
   <ItemGroup>
     <None Include="FragmentShaderWon.glsl" />
